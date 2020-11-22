@@ -5,6 +5,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.whipp.serversentevents.demo.service.EventProducer;
@@ -29,8 +30,6 @@ public class EventControllerTest {
         eventController.listen();
 
         // Then
-        Mockito.verify(eventProducer, Mockito.times(1)).registerEmitter(
-                Mockito.any(SseEmitter.class)
-        );
+        Mockito.verify(eventProducer, Mockito.times(1)).registerEmitter();
     }
 }

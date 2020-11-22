@@ -20,10 +20,12 @@ public class EventProducer {
         this.sseEmitters = sseEmitters;
     }
 
-     public void registerEmitter(SseEmitter emitter) {
+     public SseEmitter registerEmitter() {
+        final SseEmitter emitter = new SseEmitter(0L);
         sseEmitters.add(emitter);
         emitter.onTimeout(() -> removeEmitter(emitter));
         emitter.onCompletion(() -> removeEmitter(emitter));
+        return emitter;
      }
 
      public void notifyEmittersOf(Event event) {

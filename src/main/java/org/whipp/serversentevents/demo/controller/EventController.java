@@ -20,10 +20,6 @@ public class EventController {
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter listen() {
         System.out.println("Registering listener");
-        final SseEmitter emitter = new SseEmitter(0L);
-
-        eventProducer.registerEmitter(emitter);
-
-        return emitter;
+        return eventProducer.registerEmitter();
     }
 }
