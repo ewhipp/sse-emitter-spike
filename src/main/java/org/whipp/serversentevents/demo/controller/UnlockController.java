@@ -4,23 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import org.whipp.serversentevents.demo.observer.Event;
-import org.whipp.serversentevents.demo.observer.Observer;
-import org.whipp.serversentevents.demo.observer.impl.EventProducer;
-import org.whipp.serversentevents.demo.observer.impl.UnlockEvent;
+import org.whipp.serversentevents.demo.producer.impl.EventProducer;
+import org.whipp.serversentevents.demo.producer.impl.UnlockEvent;
 import org.whipp.serversentevents.demo.service.UnlockService;
-
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 
 @RequestMapping("api/v1/event/unlock")
 @RestController
-public class UnlockController implements Observer<UnlockEvent> {
+public class UnlockController {
 
     UnlockService service;
     EventProducer eventProducer;
@@ -43,12 +36,9 @@ public class UnlockController implements Observer<UnlockEvent> {
 
         eventProducer.registerEmitter(emitter);
 
+        emitter.onCompletion(() -> eventProducer.removeEmitter(emitter));
+        emitter.onTimeout(() -> eventProducer.removeEmitter(emitter));
         return emitter;
-    }
-
-    @Override
-    public void update(UnlockEvent e) {
-        unlockEvent(e);
     }
 
 }

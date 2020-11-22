@@ -1,8 +1,8 @@
 package org.whipp.serversentevents.demo.service;
 
 import org.springframework.stereotype.Service;
-import org.whipp.serversentevents.demo.observer.impl.EventProducer;
-import org.whipp.serversentevents.demo.observer.impl.UnlockEvent;
+import org.whipp.serversentevents.demo.producer.impl.EventProducer;
+import org.whipp.serversentevents.demo.producer.impl.UnlockEvent;
 
 @Service
 public class UnlockService {
@@ -13,7 +13,6 @@ public class UnlockService {
     }
 
     public void unlock(String dmsId) {
-        System.out.println("unlocking content");
         eventProducer.notifyEmittersOf(new UnlockEvent(dmsId));
     }
 }

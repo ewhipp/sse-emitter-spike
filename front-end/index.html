@@ -9,7 +9,7 @@
 <ul>
 </ul><script>
   var button = document.querySelector('button');
-  var evtSource = new EventSource('http://localhost:8080/api/v1/event/unlock', { withCredentials: true});
+  var evtSource = new EventSource('http://localhost:8080/api/v1/event/unlock');
   console.log(evtSource.withCredentials);
   console.log(evtSource.readyState);
   console.log(evtSource.url);
@@ -35,13 +35,14 @@
     evtSource.close();
   };
 
-  // evtSource.addEventListener("ping", function(e) {
-  //   var newElement = document.createElement("li");
-  //
-  //   var obj = JSON.parse(e.data);
-  //   newElement.innerHTML = "ping at " + obj.time;
-  //   eventList.appendChild(newElement);
-  // }, false);
+   evtSource.addEventListener("UNLOCK", function(e) {
+     var newElement = document.createElement("li");
+
+     var obj = JSON.parse(e.data);
+     console.log('recieved event: []', obj);
+     newElement.innerHTML = "unlock dmsId:" + obj.dmsId + " type: " + obj.type;
+     eventList.appendChild(newElement);
+   }, false);
 </script>
 </body>
 </html>

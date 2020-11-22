@@ -1,10 +1,9 @@
-package org.whipp.serversentevents.demo.observer.impl;
+package org.whipp.serversentevents.demo.producer.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import org.whipp.serversentevents.demo.observer.Event;
-import org.whipp.serversentevents.demo.observer.Observer;
-import org.whipp.serversentevents.demo.observer.Subject;
+import org.whipp.serversentevents.demo.factory.EventFactory;
+import org.whipp.serversentevents.demo.producer.Event;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,18 +12,18 @@ import java.util.List;
 public class EventProducer {
 
     private List<SseEmitter> sseEmitters;
+    private EventFactory factory;
 
-    public EventProducer(List<SseEmitter> sseEmitters) {
+    public EventProducer(List<SseEmitter> sseEmitters, EventFactory factory) {
+        this.factory = factory;
         this.sseEmitters = sseEmitters;
     }
 
      public void registerEmitter(SseEmitter emitter) {
         sseEmitters.add(emitter);
-
-        emitter.onCompletion(() -> removeEmitter(emitter));
      }
 
-     private void removeEmitter(SseEmitter emitter) {
+     public void removeEmitter(SseEmitter emitter) {
         sseEmitters.remove(emitter);
      }
 
