@@ -9,7 +9,7 @@
 <ul>
 </ul><script>
   var button = document.querySelector('button');
-  var evtSource = new EventSource('http://localhost:8080/api/v1/event/unlock');
+  var evtSource = new EventSource('http://localhost:8080/api/v1/event');
   console.log("withCreds="+evtSource.withCredentials);
   console.log("readyState="+evtSource.readyState);
   console.log("url="+evtSource.url);

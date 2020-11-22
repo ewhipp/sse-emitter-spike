@@ -1,10 +1,18 @@
 # sse-emitter-spike
 
-Basically run the spring boot app 
+This is an example project of a simple usage of the SseEmitter.
 
-There is an accompanying index.html that will create the EventSource as well, but you can also do 
-`let sse = new EventSource(http://localhost:8080/api/v1/event/unlockEvent)`
+### What this application does
+There are two endpoints
+- /api/v1/event  GET RETURNS server-sent event { dmsId: string, type: EventType }
+- /api/v1/event/unlock?dmsId={dmsId} PUT
 
-PUT http://localhost:8080/api/v1/event/unlockEvent?dmsId={dmsID} will do a fake update to a request
-GET http://localhost:8080/api/v1/event/unlockEvent should return a stream of events
+The front-end/index.html page registers the event source and will generate a list
+of any events that come through once the page is opened.
 
+A user can close the connection at anytime.
+
+The application doesn't is simply a combination of System.out statements and a return event.
+
+### What is this for
+This is basically a scaffolding project for anyone to use for server sent events using spring boot

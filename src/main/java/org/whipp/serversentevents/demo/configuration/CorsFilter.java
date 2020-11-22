@@ -1,4 +1,4 @@
-package org.whipp.serversentevents.demo;
+package org.whipp.serversentevents.demo.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;

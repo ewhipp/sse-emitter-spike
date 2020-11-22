@@ -1,12 +1,12 @@
 package org.whipp.serversentevents.demo.service;
 
 import org.springframework.stereotype.Service;
-import org.whipp.serversentevents.demo.producer.impl.EventProducer;
-import org.whipp.serversentevents.demo.producer.impl.UnlockEvent;
+import org.whipp.serversentevents.demo.model.impl.UnlockEvent;
 
 @Service
 public class UnlockService {
-    EventProducer eventProducer;
+
+    private EventProducer eventProducer;
 
     public UnlockService(EventProducer eventProducer) {
         this.eventProducer = eventProducer;
