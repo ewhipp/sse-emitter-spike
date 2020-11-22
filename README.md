@@ -1,4 +1,4 @@
-# sse-emitter-spike
+# sse-emitter-spring-boot
 
 This is an example project of a simple usage of the SseEmitter.
 
