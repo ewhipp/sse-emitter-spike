@@ -14,6 +14,6 @@ public class UnlockService {
 
     public void unlock(String dmsId) {
         System.out.println("unlocking content");
-        eventProducer.notifyObservers(new UnlockEvent(dmsId));
+        eventProducer.notifyEmittersOf(new UnlockEvent(dmsId));
     }
 }

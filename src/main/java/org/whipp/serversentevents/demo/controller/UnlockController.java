@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.whipp.serversentevents.demo.observer.Event;
 import org.whipp.serversentevents.demo.observer.Observer;
+import org.whipp.serversentevents.demo.observer.impl.EventProducer;
 import org.whipp.serversentevents.demo.observer.impl.UnlockEvent;
 import org.whipp.serversentevents.demo.service.UnlockService;
 
@@ -22,10 +23,12 @@ import java.util.concurrent.Executors;
 public class UnlockController implements Observer<UnlockEvent> {
 
     UnlockService service;
+    EventProducer eventProducer;
 
     @Autowired
-    public UnlockController(UnlockService service) {
+    public UnlockController(UnlockService service, EventProducer producer) {
         this.service = service;
+        this.eventProducer = producer;
     }
 
     @PutMapping
@@ -36,18 +39,9 @@ public class UnlockController implements Observer<UnlockEvent> {
 
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter unlockEvent(UnlockEvent event) {
-        System.out.println("notified");
         final SseEmitter emitter = new SseEmitter();
-        ExecutorService service = Executors.newSingleThreadExecutor();
 
-        service.execute(() -> {
-            try {
-                emitter.send(event);
-            } catch (IOException e) {
-                emitter.completeWithError(e);
-                throw new RuntimeException();
-            }
-        });
+        eventProducer.registerEmitter(emitter);
 
         return emitter;
     }
