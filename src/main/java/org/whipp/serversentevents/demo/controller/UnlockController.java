@@ -25,19 +25,17 @@ public class UnlockController {
     }
 
     @PutMapping
-    ResponseEntity<HttpStatus> unlockContent(@RequestParam int dmsId) {
+    ResponseEntity<HttpStatus> unlockContent(@RequestParam String dmsId) {
         service.unlock(String.valueOf(dmsId));
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
     @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter unlockEvent(UnlockEvent event) {
-        final SseEmitter emitter = new SseEmitter();
+    public SseEmitter unlockEvent() {
+        final SseEmitter emitter = new SseEmitter(0L);
 
         eventProducer.registerEmitter(emitter);
 
-        emitter.onCompletion(() -> eventProducer.removeEmitter(emitter));
-        emitter.onTimeout(() -> eventProducer.removeEmitter(emitter));
         return emitter;
     }
 

@@ -10,9 +10,9 @@
 </ul><script>
   var button = document.querySelector('button');
   var evtSource = new EventSource('http://localhost:8080/api/v1/event/unlock');
-  console.log(evtSource.withCredentials);
-  console.log(evtSource.readyState);
-  console.log(evtSource.url);
+  console.log("withCreds="+evtSource.withCredentials);
+  console.log("readyState="+evtSource.readyState);
+  console.log("url="+evtSource.url);
   var eventList = document.querySelector('ul');
 
   evtSource.onopen = function() {
@@ -26,7 +26,8 @@
     eventList.appendChild(newElement);
   };
 
-  evtSource.onerror = function() {
+  evtSource.onerror = function(e) {
+    console.log(e);
     console.log("EventSource failed.");
   };
 
@@ -39,8 +40,8 @@
      var newElement = document.createElement("li");
 
      var obj = JSON.parse(e.data);
-     console.log('recieved event: []', obj);
-     newElement.innerHTML = "unlock dmsId:" + obj.dmsId + " type: " + obj.type;
+     console.log('recieved event:', obj);
+     newElement.innerHTML = "EVENT // dmsId=[" + obj.dmsId + "] type=[" + obj.type + "] //";
      eventList.appendChild(newElement);
    }, false);
 </script>

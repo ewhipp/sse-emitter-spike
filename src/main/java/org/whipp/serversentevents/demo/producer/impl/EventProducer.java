@@ -6,12 +6,12 @@ import org.whipp.serversentevents.demo.factory.EventFactory;
 import org.whipp.serversentevents.demo.producer.Event;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EventProducer {
 
-    private List<SseEmitter> sseEmitters;
+    private Collection<SseEmitter> sseEmitters;
     private EventFactory factory;
 
     public EventProducer(List<SseEmitter> sseEmitters, EventFactory factory) {
@@ -21,9 +21,12 @@ public class EventProducer {
 
      public void registerEmitter(SseEmitter emitter) {
         sseEmitters.add(emitter);
+        emitter.onTimeout(() -> removeEmitter(emitter));
+        emitter.onCompletion(() -> removeEmitter(emitter));
      }
 
-     public void removeEmitter(SseEmitter emitter) {
+     private void removeEmitter(SseEmitter emitter) {
+        emitter.complete();
         sseEmitters.remove(emitter);
      }
 
@@ -32,7 +35,8 @@ public class EventProducer {
             try {
                 emitter.send(SseEmitter.event().name(event.getType()).data(event));
             } catch (IOException e) {
-                e.printStackTrace();
+                emitter.complete();
+                 e.printStackTrace();
             }
         });
      }
