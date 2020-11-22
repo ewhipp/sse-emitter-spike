@@ -1,5 +1,9 @@
 package org.whipp.serversentevents.demo.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import netscape.javascript.JSObject;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.whipp.serversentevents.demo.model.Event;
@@ -31,8 +35,9 @@ public class EventProducer {
         sseEmitters.remove(emitter);
      }
 
-     private static void emitEvent(Event event, SseEmitter emitter) {
+     private void emitEvent(Event event, SseEmitter emitter) {
          try {
+             System.out.println(String.format("state=[emit event],event=[%s],emitter=[%s]", event, emitter));
              emitter.send(SseEmitter.event().name(event.getType().toString()).data(event));
          } catch (IOException e) {
              emitter.complete();
